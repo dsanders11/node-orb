@@ -1,0 +1,21 @@
+description: >
+  Install specified Node.js version, running on the specified executor.
+
+executor: <<parameters.executor>>
+
+parameters:
+  executor:
+    description: The executor to use for the job.
+    type: executor
+  install-yarn:
+    default: true
+    description: Install Yarn?
+    type: boolean
+  node-version:
+    description: Specify the Node.js version to install.
+    type: string
+
+steps:
+  - install:
+      install-yarn: << parameters.install-yarn >>
+      node-version: << parameters.node-version >>

@@ -1,0 +1,25 @@
+description: >
+  Install specified Node.js version.
+
+parameters:
+  install-yarn:
+    default: true
+    description: Install Yarn?
+    type: boolean
+  node-version:
+    description: Specify the Node.js version to install.
+    type: string
+
+steps:
+  - run:
+      name: Install nvm
+      command: <<include(scripts/install-nvm.sh)>>
+  - run:
+      name: Install Node.js <<parameters.node-version>>
+      environment:
+          NODE_PARAM_VERSION: <<parameters.node-version>>
+      command: <<include(scripts/install-node.sh)>>
+  - when:
+      condition: <<parameters.install-yarn>>
+      steps:
+        - run: npm install --global yarn
