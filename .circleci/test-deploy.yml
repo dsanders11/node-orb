@@ -71,8 +71,8 @@ workflows:
                 - false
           filters: *filters
       - node/install:
-          name: check-version-job
           matrix:
+            alias: check-version-job
             parameters:
               executor:
                 - node/linux
@@ -102,5 +102,6 @@ workflows:
           requires:
             - orb-tools/pack
             - check-version
+            - check-version-job
           context: orb-publishing
           filters: *release-filters

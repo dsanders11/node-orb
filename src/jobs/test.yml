@@ -31,7 +31,7 @@ parameters:
     type: enum
   with-node-js-cache:
     default: true
-    description: Cache the Node.js version to avoid re-downloading on future runs
+    description: Cache the Node.js version to avoid re-downloading on future runs.
     type: boolean
   with-package-cache:
     default: true

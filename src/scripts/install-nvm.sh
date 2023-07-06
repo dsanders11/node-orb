@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Create the directory which CircleCI will cache
 mkdir ~/.node-js-cache
 

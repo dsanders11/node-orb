@@ -1,5 +1,5 @@
 description: >
-  Example using the test job to run tests for a Node.js package
+  Example using the test job to run tests for a Node.js package.
 
 usage:
   version: 2.1
