@@ -11,6 +11,9 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # Store the version so cache keys can easily use it
     nvm version > ~/.nvm-version;
 else
+    # Copyright (c) 2019 CircleCI Public
+    # (derived from https://github.com/CircleCI-Public/node-orb/blob/master/src/scripts/install-nvm.sh)
+
     # Only install nvm if it's not already installed
     if command -v nvm &> /dev/null; then
         echo "nvm is already installed. Skipping nvm install.";

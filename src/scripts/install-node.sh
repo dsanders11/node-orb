@@ -12,6 +12,8 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
 
     echo 'nvm use newest &>/dev/null' >> "$BASH_ENV";
 else
+    # Copyright (c) 2019 CircleCI Public
+    # (derived from https://github.com/CircleCI-Public/node-orb/blob/master/src/scripts/install-nvm.sh)
     # See: https://github.com/nvm-sh/nvm#usage
     if [ "$NODE_PARAM_VERSION" = "latest" ]; then
         # When no version is specified we default to the latest version of Node
