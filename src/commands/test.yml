@@ -24,7 +24,11 @@ parameters:
       - npm
       - yarn
     type: enum
-  with-cache:
+  with-node-js-cache:
+    default: true
+    description: Cache the Node.js version to avoid re-downloading on future runs
+    type: boolean
+  with-package-cache:
     default: true
     description: Cache your node packages automatically for faster install times.
     type: boolean
@@ -45,16 +49,18 @@ steps:
       steps:
         - install:
             install-yarn: true
+            with-cache: << parameters.with-node-js-cache >>
             node-version: << parameters.node-version >>
   - when:
       condition:
         equal: [ npm, << parameters.pkg-manager >> ]
       steps:
         - install:
+            with-cache: << parameters.with-node-js-cache >>
             node-version: << parameters.node-version >>
   - install-packages:
       cache-version: << parameters.cache-version >>
       override-ci-command: << parameters.override-ci-command >>
       pkg-manager: << parameters.pkg-manager >>
-      with-cache: << parameters.with-cache >>
+      with-cache: << parameters.with-package-cache >>
   - steps: << parameters.test-steps >>

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Create the directory which CircleCI will cache
+mkdir ~/.node-js-cache
+
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # No installation takes place here, nvm-windows should
     # already be installed on the machine image from CircleCI

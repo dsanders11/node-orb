@@ -11,6 +11,16 @@ parameters:
     default: true
     description: Install Yarn?
     type: boolean
+  cache-version:
+    default: v1
+    description: >
+      Change the default cache version if you need to clear the cache for any
+      reason.
+    type: string
+  with-cache:
+    default: true
+    description: Cache the Node.js version to avoid re-downloading on future runs
+    type: boolean
   node-version:
     description: Specify the Node.js version to install.
     type: string
@@ -18,4 +28,6 @@ parameters:
 steps:
   - install:
       install-yarn: << parameters.install-yarn >>
+      cache-version: << parameters.cache-version >>
+      with-cache: << parameters.with-cache >>
       node-version: << parameters.node-version >>
