@@ -4,7 +4,7 @@ description: >
 usage:
   version: 2.1
   orbs:
-    node: dsanders11/node@1.0.0
+    node: dsanders11/node@x.y.z
   jobs:
     test:
       executor: node/macos
