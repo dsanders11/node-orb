@@ -22,20 +22,75 @@ release-filters: &release-filters
 jobs:
   # Create jobs to test the commands of your orbs.
   # You may want to add additional validation steps to ensure the commands are working as expected.
-  command-test:
-    docker:
-      - image: cimg/base:current
+  check-version:
+    executor: << parameters.executor >>
+    parameters:
+      executor:
+        description: The executor to use for the job
+        type: string
+      cache-version:
+        default: v1
+        description: >
+          Change the default cache version if you need to clear the cache for any
+          reason.
+        type: string
+      with-cache:
+        default: true
+        description: Cache the Node.js version to avoid re-downloading on future runs
+        type: boolean
+      node-version:
+        description: Specify the Node.js version to install
+        type: string
     steps:
-      - checkout
-      # Run your orb's commands to validate them.
-      - node/greet
+      - node/install:
+          cache-version: << parameters.cache-version >>
+          with-cache: << parameters.with-cache >>
+          node-version: << parameters.node-version >>
+      - run:
+          name: Confirm Version
+          command: '[ $(node -v) == "v<<parameters.node-version>>" ]'
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       # Test your orb's commands in a custom job and test your orb's jobs directly as a part of this workflow.
-      - command-test:
+      - check-version:
+          matrix:
+            parameters:
+              executor:
+                - node/linux
+                - node/macos
+                - node/windows
+              node-version:
+                - 18.14.0
+                - 16.19.0
+              cache-version:
+                - v3
+              with-cache:
+                - true
+                - false
           filters: *filters
+      - node/install:
+          name: check-version-job
+          matrix:
+            parameters:
+              executor:
+                - node/linux
+                - node/macos
+                - node/windows
+              node-version:
+                - 18.14.0
+                - 16.19.0
+              cache-version:
+                - v3
+              with-cache:
+                - true
+                - false
+          install-yarn: false
+          post-steps:
+            - run:
+                name: Confirm Version
+                command: '[ $(node -v) == "v<<matrix.node-version>>" ]'
       # The orb must be re-packed for publishing, and saved to the workspace.
       - orb-tools/pack:
           filters: *release-filters
@@ -46,6 +101,6 @@ workflows:
           # Ensure this job requires all test jobs and the pack job.
           requires:
             - orb-tools/pack
-            - command-test
+            - check-version
           context: orb-publishing
           filters: *release-filters

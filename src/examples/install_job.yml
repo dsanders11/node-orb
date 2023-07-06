@@ -1,0 +1,17 @@
+description: >
+  Example using the install job to check the installed Node.js version
+
+usage:
+  version: 2.1
+  orbs:
+    node: dsanders11/node@1.0.0
+  workflows:
+    check_node_version:
+      jobs:
+        - node/install:
+            name: check-version
+            executor: node/macos
+            install-yarn: false
+            node-version: 18.16.1
+            post-steps:
+              - run: node -v
