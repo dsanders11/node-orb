@@ -14,7 +14,7 @@ parameters:
     type: string
   with-cache:
     default: true
-    description: Cache the Node.js version to avoid re-downloading on future runs
+    description: Cache the Node.js version to avoid re-downloading on future runs.
     type: boolean
   node-version:
     description: Specify the Node.js version to install.

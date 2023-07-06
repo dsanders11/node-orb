@@ -1,5 +1,5 @@
 description: >
-  Example using the install job to check the installed Node.js version
+  Example using the install job to check the installed Node.js version.
 
 usage:
   version: 2.1
