@@ -19,9 +19,9 @@ workflows:
           exclude: RC010
           filters: *filters
       - shellcheck/check:
-          shell: bash
           exclude: SC2016
           filters: *filters
+          shell: bash
       # Triggers the next workflow in the Orb Development Kit.
       - orb-tools/continue:
           pipeline_number: << pipeline.number >>

@@ -25,38 +25,41 @@ jobs:
   check-version:
     executor: << parameters.executor >>
     parameters:
-      executor:
-        description: The executor to use for the job
-        type: string
       cache-version:
         default: v1
         description: >
           Change the default cache version if you need to clear the cache for any
           reason.
         type: string
+      executor:
+        description: The executor to use for the job
+        type: string
+      node-version:
+        description: Specify the Node.js version to install
+        type: string
       with-cache:
         default: true
         description: Cache the Node.js version to avoid re-downloading on future runs
         type: boolean
-      node-version:
-        description: Specify the Node.js version to install
-        type: string
     steps:
       - node/install:
           cache-version: << parameters.cache-version >>
-          with-cache: << parameters.with-cache >>
           node-version: << parameters.node-version >>
+          with-cache: << parameters.with-cache >>
       - run:
-          name: Confirm Version
           command: '[ $(node -v) == "v<<parameters.node-version>>" ]'
+          name: Confirm Version
 workflows:
   test-deploy:
     jobs:
       # Make sure to include "filters: *filters" in every test job you want to run as part of your deployment.
       # Test your orb's commands in a custom job and test your orb's jobs directly as a part of this workflow.
       - check-version:
+          filters: *filters
           matrix:
             parameters:
+              cache-version:
+                - v3
               executor:
                 - node/linux
                 - node/macos
@@ -64,16 +67,16 @@ workflows:
               node-version:
                 - 18.14.0
                 - 16.19.0
-              cache-version:
-                - v3
               with-cache:
-                - true
                 - false
-          filters: *filters
+                - true
       - node/install:
+          install-yarn: false
           matrix:
             alias: check-version-job
             parameters:
+              cache-version:
+                - v3
               executor:
                 - node/linux
                 - node/macos
@@ -81,16 +84,13 @@ workflows:
               node-version:
                 - 18.14.0
                 - 16.19.0
-              cache-version:
-                - v3
               with-cache:
-                - true
                 - false
-          install-yarn: false
+                - true
           post-steps:
             - run:
-                name: Confirm Version
                 command: '[ $(node -v) == "v<<matrix.node-version>>" ]'
+                name: Confirm Version
       # The orb must be re-packed for publishing, and saved to the workspace.
       - orb-tools/pack:
           filters: *release-filters

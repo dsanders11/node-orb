@@ -9,9 +9,9 @@ usage:
     check_node_version:
       jobs:
         - node/install:
-            name: check-version
             executor: node/macos
             install-yarn: false
+            name: check-version
             node-version: 18.16.1
             post-steps:
               - run: node -v

@@ -10,7 +10,7 @@ parameters:
       reason.
     type: string
   override-ci-command:
-    default: ''
+    default: ""
     description: >
       By default, packages will be installed with "npm ci", "yarn install
       --frozen-lockfile" or "yarn install --immutable".
